@@ -37,14 +37,51 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #react + django config
-    "corsheaders",
+    #My own apps
+    "accounts",
     "apples",
+    #authentification packages//react + django config
+    'rest_framework',
+    'rest_framework.authtoken',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'dj_rest_auth',
+    'dj_rest_auth.registration',
+    'corsheaders',
 
 ]
+#My customise user models
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
-#url react app (frontend)
-CORS_ALLOWED_ORIGINS = ["http://localhost:5173"] 
+# Allauth configuration
+SITE_ID = 1
+# Autorise la connexion par email uniquement
+ACCOUNT_LOGIN_METHODS = {'email'}
+
+# Déclare les champs nécessaires à l'inscription (le * signifie "requis")
+ACCOUNT_SIGNUP_FIELDS = ['email*', 'password1*', 'password2*']
+
+
+# REST Framework
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ]
+}
+
+
+# CORS
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5174",
+    "http://localhost:5175"
+]
+CORS_ALLOW_CREDENTIALS = True
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -56,6 +93,9 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #react+django
      "corsheaders.middleware.CorsMiddleware",
+     #django allauth
+     'allauth.account.middleware.AccountMiddleware'
+
 ]
 
 ROOT_URLCONF = 'backend.urls'
